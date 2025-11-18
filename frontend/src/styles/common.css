@@ -1,0 +1,74 @@
+/* Common styles: header, states, hero */
+:root {
+  --primary-color: #2e7d32;
+  --primary-light: #60ad5e;
+  --primary-dark: #005005;
+  --secondary-color: #f5f5f5;
+  --text-color: #333333;
+  --text-light: #666666;
+  --accent-color: #ff6b6b;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+.page-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark))!important;
+  border-bottom: 1px solid var(--gray-200);
+  padding: var(--space-12) 0 var(--space-8);
+  margin-bottom: 2rem;
+}
+
+.page-header .page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: #ffff;
+  border-left: 4px solid var(--primary-light);
+  padding-left: var(--space-4);
+}
+
+.page-header .page-description {
+  color: #fff;
+  max-width: 720px;
+}
+
+.error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: var(--space-4);
+  border-radius: var(--border-radius);
+  margin-top: var(--space-4);
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--gray-700);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid var(--gray-300);
+  border-top-color: var(--primary-color);
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hero .btn {
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.hero .btn:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}

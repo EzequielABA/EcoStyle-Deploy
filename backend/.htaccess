@@ -1,0 +1,42 @@
+RewriteEngine On
+
+# Habilitar CORS
+<IfModule mod_headers.c>
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# Manejar preflight requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Permitir acceso directo a archivos de la carpeta api
+RewriteCond %{REQUEST_URI} ^.*/api/
+RewriteRule ^ - [L]
+
+# Redireccionar otras peticiones al index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Configuración de seguridad
+<Files "*.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Prevenir acceso directo a archivos de configuración
+<Files "config/*">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Configurar tipos MIME
+AddType application/json .json
+
+# Configurar cache para archivos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/json "access plus 1 hour"
+</IfModule>

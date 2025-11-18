@@ -1,0 +1,281 @@
+Crea un proyecto completo de tienda ecológica llamada "EcoStyle RD" con la siguiente estructura:
+
+## STACK TECNOLÓGICO:
+- Backend: PHP + MySQL
+- Frontend: React + Vite + CSS puro (sin Tailwind)
+- Librerías: axios, react-router-dom, lucide-react
+
+## ESTRUCTURA DE CARPETAS:
+
+EcoStyle-RD/
+├── backend/
+│   ├── config/
+│   │   └── database.php
+│   ├── models/
+│   │   ├── Producto.php
+│   │   ├── Categoria.php
+│   │   └── Contacto.php
+│   ├── api/
+│   │   ├── productos.php
+│   │   ├── categorias.php
+│   │   ├── buscar.php
+│   │   └── contacto.php
+│   ├── public/
+│   │   └── index.php
+│   ├── .htaccess
+│   └── composer.json
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Navbar.css
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Footer.css
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── ProductCard.css
+│   │   │   ├── ProductFilter.jsx
+│   │   │   ├── ProductFilter.css
+│   │   │   ├── ContactForm.jsx
+│   │   │   └── ContactForm.css
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Home.css
+│   │   │   ├── Products.jsx
+│   │   │   ├── Products.css
+│   │   │   ├── Contact.jsx
+│   │   │   └── Contact.css
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── package.json
+│   └── vite.config.js
+│
+└── database/
+    └── ecostyle.sql
+
+## BACKEND - DATABASE (ecostyle.sql):
+
+CREATE DATABASE IF NOT EXISTS ecostyle_rd CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ecostyle_rd;
+
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    icono VARCHAR(50),
+    activa BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion TEXT NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    precio_oferta DECIMAL(10, 2) DEFAULT NULL,
+    categoria_id INT NOT NULL,
+    stock INT DEFAULT 0,
+    imagen VARCHAR(255),
+    disponible BOOLEAN DEFAULT TRUE,
+    destacado BOOLEAN DEFAULT FALSE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE,
+    INDEX idx_categoria (categoria_id),
+    INDEX idx_precio (precio),
+    INDEX idx_disponible (disponible)
+) ENGINE=InnoDB;
+
+CREATE TABLE contactos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    telefono VARCHAR(20),
+    asunto VARCHAR(200) NOT NULL,
+    mensaje TEXT NOT NULL,
+    leido BOOLEAN DEFAULT FALSE,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+INSERT INTO categorias (nombre, descripcion, icono) VALUES
+('Hogar Sostenible', 'Productos ecológicos para el hogar', '🏠'),
+('Cuidado Personal', 'Cosmética natural y productos de higiene', '🧴'),
+('Alimentación', 'Alimentos orgánicos y saludables', '🥗'),
+('Moda Consciente', 'Ropa y accesorios sostenibles', '👕'),
+('Zero Waste', 'Productos reutilizables y sin plástico', '♻️');
+
+INSERT INTO productos (nombre, descripcion, precio, precio_oferta, categoria_id, stock, imagen, destacado) VALUES
+('Cepillo de Bambú', 'Cepillo dental 100% biodegradable hecho de bambú orgánico', 250.00, 199.00, 2, 50, 'cepillo-bambu.jpg', TRUE),
+('Bolsas Reutilizables Set x5', 'Set de bolsas de tela orgánica para compras', 450.00, NULL, 5, 30, 'bolsas-tela.jpg', TRUE),
+('Jabón Artesanal Natural', 'Jabón hecho a mano con aceites esenciales', 180.00, 150.00, 2, 100, 'jabon-natural.jpg', FALSE),
+('Botella de Acero Inoxidable', 'Botella térmica reutilizable 500ml', 650.00, NULL, 5, 25, 'botella-acero.jpg', TRUE),
+('Shampoo Sólido Orgánico', 'Shampoo sin sulfatos ni parabenos', 320.00, 280.00, 2, 40, 'shampoo-solido.jpg', FALSE),
+('Camiseta de Algodón Orgánico', 'Camiseta unisex 100% algodón orgánico', 850.00, NULL, 4, 20, 'camiseta-organica.jpg', FALSE),
+('Aceite de Coco Virgen', 'Aceite de coco prensado en frío 500ml', 420.00, NULL, 3, 35, 'aceite-coco.jpg', FALSE),
+('Esponja Vegetal Natural', 'Esponja biodegradable de luffa', 120.00, 99.00, 1, 60, 'esponja-vegetal.jpg', FALSE),
+('Café Orgánico en Grano', 'Café 100% orgánico de comercio justo 250g', 380.00, NULL, 3, 45, 'cafe-organico.jpg', TRUE),
+('Cubiertos de Bambú Portátiles', 'Set de cubiertos reutilizables con estuche', 290.00, NULL, 5, 55, 'cubiertos-bambu.jpg', FALSE);
+
+## BACKEND - CONFIG (database.php):
+
+<?php
+class Database {
+    private $host = "localhost";
+    private $db_name = "ecostyle_rd";
+    private $username = "root";
+    private $password = "";
+    private $conn;
+
+    public function getConnection() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
+                $this->username,
+                $this->password
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            echo json_encode(['success' => false, 'message' => 'Error de conexión: ' . $e->getMessage()]);
+            exit();
+        }
+        return $this->conn;
+    }
+}
+?>
+
+## BACKEND - MODELOS:
+
+Crea tres modelos (Producto.php, Categoria.php, Contacto.php) con:
+- Producto.php: métodos obtenerTodos(), obtenerPorId(), buscar(), obtenerDestacados()
+- Categoria.php: métodos obtenerTodas(), obtenerPorId()
+- Contacto.php: método crear(), validarEmail()
+
+Todos deben usar PDO y preparar statements para prevenir SQL injection.
+
+## BACKEND - API:
+
+Crea 4 endpoints REST:
+1. productos.php: GET con soporte para ?id=X y ?destacados=true
+2. categorias.php: GET con soporte para ?id=X
+3. buscar.php: GET con parámetros q, categoria, precio_min, precio_max
+4. contacto.php: POST para crear mensajes
+
+Todos con headers CORS y manejo de errores JSON.
+
+## BACKEND - ROUTER (public/index.php):
+
+Router principal que redirija a los endpoints según la ruta.
+
+## BACKEND - .htaccess:
+
+Configurar rewrite rules, CORS headers y protección de archivos.
+
+## FRONTEND - package.json:
+
+{
+  "name": "ecostyle-rd-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.0",
+    "axios": "^1.6.7",
+    "lucide-react": "^0.344.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.4"
+  }
+}
+
+## FRONTEND - vite.config.js:
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/ecostyle-rd/backend/public')
+      }
+    }
+  }
+})
+
+## FRONTEND - SERVICIOS (api.js):
+
+Crear servicio centralizado con axios que exporte:
+- productosService: obtenerTodos(), obtenerPorId(), obtenerDestacados()
+- categoriasService: obtenerTodas(), obtenerPorId()
+- busquedaService: buscar(termino, filtros)
+- contactoService: enviar(datos)
+
+Base URL: http://localhost/ecostyle-rd/backend/public
+
+## FRONTEND - ESTILOS GLOBALES (index.css):
+
+CSS moderno con:
+- Variables CSS para colores (--primary-color: #10b981, etc.)
+- Reset básico
+- Clases utilitarias (.btn, .card, .input, .grid, etc.)
+- Responsive con media queries
+- Animación loading spinner
+
+## FRONTEND - COMPONENTES:
+
+1. **Navbar**: Logo con icono Leaf, links (Inicio, Productos, Contacto), menú móvil hamburguesa
+2. **Footer**: 4 columnas (info, enlaces, contacto, redes sociales)
+3. **ProductCard**: Imagen, badges (destacado, descuento), nombre, descripción, precio, botón
+4. **ProductFilter**: Barra búsqueda, filtros (categoría, precio min/max), botón limpiar
+5. **ContactForm**: Formulario completo con validación, estados (enviando, éxito, error)
+
+## FRONTEND - PÁGINAS:
+
+1. **Home**: Hero section con gradiente, features grid (3 cards), productos destacados
+2. **Products**: Header, ProductFilter, grid de productos, estados de carga
+3. **Contact**: Info cards (email, teléfono, ubicación, horario), ContactForm, mapa placeholder
+
+## FRONTEND - App.jsx:
+
+Router con rutas: / (Home), /productos (Products), /contacto (Contact)
+Layout con Navbar, main content, Footer
+
+## ESTILOS:
+
+- Paleta de colores verde (#10b981) como primario
+- Diseño moderno con border-radius, sombras, transiciones
+- 100% responsive (mobile-first)
+- Sin Tailwind, solo CSS puro
+- Animaciones suaves (hover effects, loading)
+
+## FUNCIONALIDADES CLAVE:
+
+✅ Listar todos los productos
+✅ Buscar productos por término
+✅ Filtrar por categoría y rango de precio
+✅ Mostrar productos destacados en Home
+✅ Formulario de contacto funcional con validación
+✅ Diseño responsive completo
+✅ Manejo de estados de carga y errores
+✅ API REST completa con CORS

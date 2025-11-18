@@ -1,0 +1,274 @@
+/* Estilos modernos para el componente Slider */
+.slider {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: var(--space-10) 0;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+  display: flex;
+  align-items: center;
+}
+
+.slide-content {
+  max-width: 600px;
+  padding: var(--space-8);
+  color: white;
+  animation: fadeInUp 0.8s ease-out forwards;
+  background-color: #000000cc;
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+}
+
+.slide-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.slide-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-6);
+  opacity: 0.9;
+  color: #fff;
+}
+
+.slide-cta {
+  padding: var(--space-3) var(--space-6);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.slide-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Controles del slider */
+.slider-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.slider-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: var(--space-3) var(--space-4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slider-timer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.slider-counter {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 30px;
+}
+
+.slider-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100px;
+}
+
+.slider-progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.slider-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.slider-control-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider-control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.slider-control-btn.play-pause {
+  background: var(--primary);
+}
+
+.slider-control-btn.play-pause:hover {
+  background: var(--primary-dark);
+}
+
+.slider-indicator {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slide-separator {
+  margin: 0 var(--space-1);
+  opacity: 0.7;
+}
+
+/* Indicadores de diapositivas */
+.slider-dots {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.slider-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  background: var(--primary);
+  transform: scale(1.2);
+}
+
+.slider-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slider {
+    height: 400px;
+  }
+  
+  .slide-title {
+    font-size: 2rem;
+  }
+  
+  .slide-subtitle {
+    font-size: 1rem;
+  }
+  
+  .slider-controls {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .slider-dots {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    height: 350px;
+    border-radius: 8px;
+  }
+  
+  .slide-title {
+    font-size: 1.5rem;
+  }
+  
+  .slide-content {
+    padding: var(--space-4);
+  }
+  
+  .slider-progress-container {
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .slider-control-btn {
+    width: 32px;
+    height: 32px;
+  }
+}

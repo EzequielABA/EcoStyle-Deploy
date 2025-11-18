@@ -1,0 +1,76 @@
+/* Order Confirmation / Invoice Styles */
+.order-confirmation-page {
+  padding: 24px 0;
+
+}
+
+.order-confirmation-page .container {
+  max-width: 960px;
+}
+
+.order-confirmation-page .page-header {
+  margin-bottom: 16px;
+  color: #ffff;
+}
+
+.invoice {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  padding: 20px;
+}
+
+.invoice-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px dashed #eaeaea;
+  padding-bottom: 12px;
+}
+
+.invoice-customer h3,
+.invoice-items h3 {
+  margin: 10px 0;
+}
+
+.order-confirmation-page .order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.order-confirmation-page .order-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px dashed #e8e8e8;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.order-confirmation-page .item-name {
+  font-weight: 600;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-confirmation-page .item-quantity { color: #666; }
+.order-confirmation-page .item-price { font-weight: 600; color: #2C5530; }
+
+.invoice-total .summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .invoice-header { flex-direction: column; align-items: flex-start; }
+}
