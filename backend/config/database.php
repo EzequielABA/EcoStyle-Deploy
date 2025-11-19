@@ -7,7 +7,7 @@ class Database {
     private string $user = 'root';
     private string $pass = '';
     private string $charset = 'utf8mb4';
-    private int $port = 3307;
+    private int $port = 3306;
 
     public \PDO $pdo;
     private $conn;
