@@ -14,21 +14,21 @@ class Database {
 
     public function __construct() {
 
-        // Variables de entorno de Render
+        // Variables de Railway
         $this->host = getenv('MYSQLHOST');
         $this->db   = getenv('MYSQLDATABASE');
         $this->user = getenv('MYSQLUSER');
         $this->pass = getenv('MYSQLPASSWORD');
         $this->port = intval(getenv('MYSQLPORT'));
 
-        // Configuraciones PDO
         $options = [
-            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-            \PDO::ATTR_EMULATE_PREPARES   => false,
+            \PDO::ATTR_EMULATE_PREPARES => false,
         ];
 
         try {
+
             $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->db};charset={$this->charset}";
             $this->pdo = new \PDO($dsn, $this->user, $this->pass, $options);
 
@@ -38,9 +38,10 @@ class Database {
 
             echo json_encode([
                 'error'   => 'Error de conexión a la base de datos',
-                'message' => 'No fue posible conectar al servidor MySQL',
+                'message' => 'No fue posible conectar a Railway',
                 'detail'  => $e->getMessage()
             ]);
+
             exit;
         }
     }
