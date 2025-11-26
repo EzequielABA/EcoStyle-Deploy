@@ -15,11 +15,11 @@ class Database {
     public function __construct() {
 
         // Variables de entorno de Render
-        $this->host = getenv('DB_HOST');
-        $this->db   = getenv('DB_NAME');
-        $this->user = getenv('DB_USER');
-        $this->pass = getenv('DB_PASS');
-        $this->port = intval(getenv('DB_PORT'));
+        $this->host = getenv('MYSQLHOST');
+        $this->db   = getenv('MYSQLDATABASE');
+        $this->user = getenv('MYSQLUSER');
+        $this->pass = getenv('MYSQLPASSWORD');
+        $this->port = intval(getenv('MYSQLPORT'));
 
         // Configuraciones PDO
         $options = [
