@@ -14,14 +14,14 @@ class Database {
 
     public function __construct() {
 
-        // Tomar las variables del entorno (Render)
+        // Variables de entorno de Render
         $this->host = getenv('DB_HOST');
         $this->db   = getenv('DB_NAME');
         $this->user = getenv('DB_USER');
         $this->pass = getenv('DB_PASS');
         $this->port = intval(getenv('DB_PORT'));
 
-        // Configuraciones del PDO
+        // Configuraciones PDO
         $options = [
             \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
@@ -38,10 +38,9 @@ class Database {
 
             echo json_encode([
                 'error'   => 'Error de conexión a la base de datos',
-                'message' => 'No fue posible conectar a la base de datos en Render + Railway',
+                'message' => 'No fue posible conectar al servidor MySQL',
                 'detail'  => $e->getMessage()
             ]);
-
             exit;
         }
     }
